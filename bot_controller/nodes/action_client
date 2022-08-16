@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+import rospy
+from action.action_client import MoveBotActionClient
+
+if __name__ == '__main__':
+    try:
+        client = MoveBotActionClient()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Action terminated.")
