@@ -12,7 +12,6 @@ Assuming you have the catkin workspace `lecture10_ws` located in your home direc
 - `catkin build` (build it twice)
 - `source ~/lecture10_ws/devel/setup.bash` (add this line in your `.bashrc`)
 - `source ~/.bashrc`
-- `roslaunch workcell_809e workcell.launch`
 
 # Use the correct shebang line
 
