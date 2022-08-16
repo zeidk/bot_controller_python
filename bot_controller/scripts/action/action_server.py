@@ -8,7 +8,7 @@ from math import atan2, pi
 import actionlib
 import rospy
 
-class MoveBotActionServer:
+class MoveBotActionServer(object):
 
     def __init__(self):
         rospy.init_node('move_bot_server')
