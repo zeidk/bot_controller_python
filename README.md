@@ -1,7 +1,7 @@
 
 # Package for Lecture10 (ENPM809E 2022)
 
-# Steps to clone and run packages
+## Steps to clone and run packages
 
 Assuming you have the catkin workspace `lecture10_ws` located in your home directory:
 - `cd ~/lecture10_ws/src`
