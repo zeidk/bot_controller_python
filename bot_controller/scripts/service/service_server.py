@@ -5,67 +5,75 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from custom_msgs.srv import TakePicture, TakePictureResponse
 
-
 class ServiceServer(object):
+    """Class which provides a Service server to handle Service client requests.
+
+
+    Args:
+        _bridge (CvBridge): OpenCV bridge object.
+        _image (cv::Mat): OpenCV image converted from a ROS image.
     """
-    Class which provides a Service server to handle Service client requests
-    """
+    
+    _service_name = 'take_picture_service'
+    
+    @classmethod
+    def service_name(cls):
+        """Class method which returns the name of the service
+
+        Returns:
+            str: The name of the Service
+        """
+        return cls._service_name
+    
 
     def __init__(self):
         self._bridge = CvBridge()
-        self._image_received = False
         self._image = None
         rospy.init_node('camera_server')
         # Subscribe to the turtlebot camera Topic
         rospy.Subscriber("/camera/rgb/image_raw", Image, self.camera_cb)
         # Callback to process client's request
-        rospy.Service('take_picture_service', TakePicture, self.service_cb)
+        rospy.Service(self._service_name, TakePicture, self.service_cb)
         rospy.loginfo("Server is ready to accept request")
         rospy.spin()
 
 
-    def camera_cb(self, msg):
+    def camera_cb(self, image_message):
         """
-        callback function to handle Messages published
-        on the Topic /camera/rgb/image_raw
+        Callback to handle Messages published on the Topic /camera/rgb/image_raw.
 
         Args:
-            msg (Image): Image data
+            image_message (Image): Image data from Turtlebot camera.
         """
 
         # Convert image to OpenCV format
         cv_image = None
         try:
-            cv_image = self._bridge.imgmsg_to_cv2(msg, "bgr8")
+            cv_image = self._bridge.imgmsg_to_cv2(image_message, desired_encoding="bgr8")
         except CvBridgeError as e:
             rospy.logerr(e)
 
-        self._image_received = True
         # numpy array
         self._image = cv_image
 
 
     def service_cb(self, request):
         """
-        Callback function to process service client's request
+        Callback to process a Service Client's request.
 
         Args:
-            request (str): Name of the picture sent by the client
+            request (str): Name of the picture to save camera image on disk.
 
         Returns:
-            str: The result of the request
+            str: Whether or not the image was saved on disk.
         """
         if self._image is not None:
             rospy.loginfo("Processing request")
-            # Save an image
+            # location to save the image
             final_image = "/tmp/"+str(request.picture_name)+'.jpg'
-            # save image to a specified file
+            # save image on disk
             write_status = cv2.imwrite(final_image, self._image)
             if write_status:
-                rospy.loginfo("Image saved at {}".format(final_image))
-                return TakePictureResponse('Picture saved')
+                return TakePictureResponse("Image saved at {}".format(final_image))
             else:
-                rospy.logerr("Image NOT saved")
-                return TakePictureResponse('Picture Not saved')
-        else:
-            return TakePictureResponse('Picture Not saved')
+                return TakePictureResponse("Image NOT saved")

@@ -1,4 +1,4 @@
-from custom_msgs.msg import MoveBotAction, MoveBotFeedback, MoveBotResult, MoveBotActionResult
+from custom_msgs.msg import MoveBotAction, MoveBotFeedback, MoveBotResult
 import tf
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry

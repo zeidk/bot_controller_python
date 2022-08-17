@@ -11,7 +11,7 @@ class MoveBotActionClient(object):
     def __init__(self):
         rospy.init_node('move_robot_client')
         
-        self._counter = 0
+        # self._counter = 0
        
         # Action client
         self._client = actionlib.SimpleActionClient(
@@ -26,15 +26,13 @@ class MoveBotActionClient(object):
 
 
     def myhook(self):
-        """
-        Function to call when shutting down a Node
+        """Function to call when shutting down a Node.
         """
         rospy.loginfo("shutdown time!")
 
 
     def handle_inputs(self):
-        """
-        Handle arguments passed to the command line
+        """Handle arguments passed to the command line.
         """
 
         x = rospy.get_param("~x")
@@ -48,12 +46,11 @@ class MoveBotActionClient(object):
  
  
     def move_to_goal(self, x, y):
-        """
-        Set up the goal and send it to the server
+        """Set up the goal and send it to the Action Server.
 
         Args:
-            x (float): x coordinate
-            y (float): y coordinate
+            x (float): x coordinate of the position to reach.
+            y (float): y coordinate of the position to reach.
         """
         rospy.loginfo("Moving the robot to ({}, {})".format(x, y))
         move_bot_action_goal = MoveBotGoal()
@@ -68,23 +65,30 @@ class MoveBotActionClient(object):
 
 
     def done_cb(self, status, result):
-        """
-        Called when the action is done
+        """Callback for when the action is done.
 
         Args:
-            status (int): Return status by the server
-            result (str): result message from the server
+            status (int): Returned status by the Server.
+            result (str): result message from the Server.
         """
         if status == 3:
             rospy.loginfo(result)
 
 
     def active_cb(self):
+        """Callback  for when the goal has been sent to the Server.
+        """
         rospy.loginfo(
             "Goal pose is now being processed by the Action Server...")
 
 
     def feedback_cb(self, msg):
+        """Callback to process feedback sent from the Server.
+
+        Args:
+            msg (str): Feedback sent from the Server.
+        """
+        
         rospy.loginfo(msg)
         # self._counter += 1
         # if self._counter == 30:

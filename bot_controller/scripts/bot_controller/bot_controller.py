@@ -12,8 +12,7 @@ from custom_msgs.msg import RobotStatus
 
 
 class BotController(object):
-    """
-    A controller class to drive a turtlebot in Gazebo.
+    """A controller class to drive a turtlebot in Gazebo.
     """
 
     def __init__(self, rate=10):
@@ -41,6 +40,8 @@ class BotController(object):
         self._current_y_pos = None
         self._current_orientation = None
         self._initial_orientation = None
+        
+        self._robot_status = RobotStatus()
 
         #  used to check whether the goal has been reached
         self._goal_reached = False
@@ -89,9 +90,6 @@ class BotController(object):
         Args:
             msg (nav_msgs/Odometry): One Odometry message
         """
-        # self._current_pose = msg.pose.pose
-        # self._linear_x = msg.twist.twist.linear.x
-        # self._angular_z = msg.twist.twist.angular.z
         quaternion = (msg.pose.pose.orientation.x, msg.pose.pose.orientation.y,
                       msg.pose.pose.orientation.z, msg.pose.pose.orientation.w)
 
@@ -182,19 +180,7 @@ class BotController(object):
         """
         Method to build and publish Messages on the Topic robot_status
         """
-        robot_status = RobotStatus()
-        # robot_status.model = "Unknown"
-        # if rospy.has_param("tb3_model"):
-        #     robot_status.model = rospy.get_param("tb3_model") 
-        # robot_status.pose = self._current_pose
-        # robot_status.velocities[0] = self._linear_x
-        # robot_status.velocities[1] = self._angular_z
-        
-        # if robot_status.pose is not None:
-        #     if robot_status.velocities[0] is not None:
-        #         if robot_status.velocities[1] is not None:
-        #             # rospy.loginfo("Publishing robot status")
-        #             self._robot_status_publisher.publish(robot_status)
+        pass
                     
 
     def handle_inputs(self):
