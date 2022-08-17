@@ -9,7 +9,6 @@ Assuming you have the catkin workspace `lecture10_ws` located in your home direc
 - `cd ~/lecture10_ws`
 - `rosdep install --from-paths . --ignore-src --rosdistro noetic -y` (replace `noetic` with `melodic` if you are using `melodic`)
 - `catkin build`
-- `catkin build` (build it twice)
 - `source ~/lecture10_ws/devel/setup.bash` (add this line in your `.bashrc`)
 - `source ~/.bashrc`
 

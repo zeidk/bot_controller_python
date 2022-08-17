@@ -8,7 +8,6 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from math import sqrt, atan2, pi
 from geometry_msgs.msg import Twist
-from custom_msgs.msg import RobotStatus
 
 
 class BotController(object):
@@ -41,7 +40,6 @@ class BotController(object):
         self._current_orientation = None
         self._initial_orientation = None
         
-        self._robot_status = RobotStatus()
 
         #  used to check whether the goal has been reached
         self._goal_reached = False
@@ -49,8 +47,7 @@ class BotController(object):
         # Publishers
         self._velocity_publisher = rospy.Publisher(
             'cmd_vel', Twist, queue_size=10)
-        self._robot_status_publisher = rospy.Publisher(
-            'robot_status', RobotStatus, queue_size=10)
+       
         # Subscribers
         rospy.Subscriber("/odom", Odometry, self.odom_callback)
         # rospy.Subscriber("/robot_status", RobotStatus, self.robot_status_callback)
@@ -74,14 +71,14 @@ class BotController(object):
         return sqrt(((x2-x1)**2) + ((y2-y1)**2))
     
 
-    def robot_status_callback(self, msg: RobotStatus):
-        """
-        Callback method for the Topic /robot_status
+    # def robot_status_callback(self, msg: RobotStatus):
+    #     """
+    #     Callback method for the Topic /robot_status
 
-        Args:
-            msg (RobotStatus): One RobotStatus Message
-        """
-        rospy.loginfo(msg.DRIVE_TYPE)
+    #     Args:
+    #         msg (RobotStatus): One RobotStatus Message
+    #     """
+    #     rospy.loginfo(msg.DRIVE_TYPE)
 
 
     def odom_callback(self, msg: Odometry):
